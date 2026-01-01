@@ -6,7 +6,7 @@ router.route("/")
   .get(messagesController.getAllMessages)
 
 router.route("/encrypt")
-  .post(messagesController.createMessage)
+  .post(messagesController.encrypt)
 
 router.route("/decrypt")
   .post(messagesController.decrypt)

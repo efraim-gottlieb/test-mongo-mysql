@@ -1,6 +1,6 @@
 import { reverse } from "../utils/encryptions.js";
 
-export async function createMessage(req, res) {
+export async function encrypt(req, res) {
   if (!(req.body.message && req.body.cipherType)) {
     res.status(400).json({ error: "body error" });
     return;
