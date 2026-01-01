@@ -1,4 +1,4 @@
-import { reverse } from "../utils/encryptions.js";
+import { reverse, atbash, randomShuffle } from "../utils/encryptions.js";
 
 export async function encrypt(req, res) {
   if (!(req.body.message && req.body.cipherType)) {
@@ -23,7 +23,14 @@ export async function encrypt(req, res) {
   );
 
   const { message, cipherType } = req.body;
-  const encryptedText = reverse(message);
+  let encryptedText;
+  if (cipherType == "reverse") {
+    encryptedText = reverse(message);
+  } else if (cipherType == "atbash") {
+    encryptedText = atbash(message);
+  } else if (message[0].cipher_type == "random_shuffle") {
+    encryptedText = randomShuffle(message);
+  }
   const newMessage = await conn.query(
     `
     INSERT INTO messages (username, cipher_type, encrypted_text)
@@ -89,9 +96,21 @@ export async function decrypt(req, res) {
     [username, req.body.messageId]
   );
   try {
-    const decryptedText = reverse(message[0].encrypted_text);
+    let decryptedText;
+    if (message[0].cipher_type == "reverse") {
+      decryptedText = reverse(message[0].encrypted_text);
+    } else if (message[0].cipher_type == "atbash") {
+      decryptedText = atbash(message[0].encrypted_text);
+    } else if (message[0].cipher_type == "random_shuffle") {
+      res.json({
+        id: req.body.messageId,
+        decryptedText: null,
+        error: "can't to be decrypted",
+      });
+      return;
+    }
     res.json({ id: req.body.messageId, decryptedText });
   } catch {
-    res.status(404).json({error: 'message not found for this user'})
+    res.status(404).json({ error: "message not found for this user" });
   }
 }
