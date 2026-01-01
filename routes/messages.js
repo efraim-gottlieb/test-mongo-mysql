@@ -1,12 +1,12 @@
-// import express from "express";
-// import * as orderdsController from "../controllers/messages.js";
-// const router = express.Router();
+import express from "express";
+import * as messagesController from "../controllers/messages.js";
+const router = express.Router();
 
-// router.route("/")
-//   .get(orderdsController.getOrders)
-//   .post(orderdsController.createOrder)
+router.route("/")
+  .post(messagesController.createMessage)
+//   .post(messagesController.createOrder)
 
 // router.route("/:id")
-//   .get(orderdsController.getOrderById)
+//   .get(messagesController.getOrderById)
 
-// export default router;
+export default router;

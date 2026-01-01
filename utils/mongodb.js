@@ -15,7 +15,7 @@ export async function initMongoDb() {
     mongoConn = mongocClient.db(DB_NAME);
 
     const productsCollection = mongoConn.collection(COLLECTION_NAME);
-    await productsCollection.createIndex({ name: 1 }, { unique: true });
+    await productsCollection.createIndex({ username: 1 }, { unique: true });
     await mongocClient.close();
     mongoConn=null;
     mongocClient=null
