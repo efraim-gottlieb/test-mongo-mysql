@@ -4,6 +4,10 @@ const router = express.Router();
 
 router.route("/")
   .get(messagesController.getAllMessages)
+
+router.route("/encrypt")
   .post(messagesController.createMessage)
 
+router.route("/decrypt")
+  .post(messagesController.decrypt)
 export default router;

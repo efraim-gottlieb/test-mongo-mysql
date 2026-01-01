@@ -56,8 +56,42 @@ export async function getAllMessages(req, res) {
     WHERE username = ?
     `,
     [username]
-  )
+  );
   res.json({
     items,
   });
+}
+
+export async function decrypt(req, res) {
+  if (!req.body.messageId) {
+    res.status(400).json({ error: "body error" });
+    return;
+  }
+  const conn = req.mysqlDbConn;
+  const mongoConn = req.mongoDbConn;
+  const collection = await mongoConn.collection("users");
+  const username = req.headers["username"];
+  const password = req.headers["password"];
+  const users = await collection
+    .find({ username: username, password: password })
+    .toArray();
+  if (!users.length) {
+    res.status(404).json({ error: "User not found or password incorrect" });
+    return;
+  }
+  const [message] = await conn.query(
+    `
+    SELECT * FROM messages
+    WHERE username = ?
+    AND
+    id = ?
+    `,
+    [username, req.body.messageId]
+  );
+  try {
+    const decryptedText = reverse(message[0].encrypted_text);
+    res.json({ id: req.body.messageId, decryptedText });
+  } catch {
+    res.status(404).json({error: 'message not found for this user'})
+  }
 }
