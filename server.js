@@ -1,5 +1,6 @@
 import express from "express";
 import messagesRoutes from "./routes/messages.js";
+import authRoutes from "./routes/auth.js";
 import usersRoutes from "./routes/users.js";
 
 import { initSqlDb, getMysqlConnection } from "./utils/mysql.js";
@@ -21,7 +22,8 @@ app.use('/api', async (req, res, next) => {
 });
 
 app.use("/api/messages", messagesRoutes);
-app.use("/api/auth", usersRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/users", usersRoutes);
 
 app.listen(PORT, async () => {
   console.log(`server run on ${PORT}...`);
