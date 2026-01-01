@@ -1,0 +1,20 @@
+{
+  "name": "ecommerce",
+  "version": "1.0.0",
+  "description": "Build an Express server that manages products (stored in MongoDB) and orders (stored in MySQL) for an e-commerce system. This exercise will help you practice working with both MongoDB and MySQL databases in a single application.",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "mongodb": "^7.0.0",
+    "mysql2": "^3.16.0",
+    "nodemon": "^3.1.11"
+  }
+}
